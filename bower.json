@@ -1,0 +1,32 @@
+{
+  "name": "nglivejournal",
+  "main": "ng-livejournal.js",
+  "version": "0.0.1",
+  "homepage": "https://github.com/leoz2011/ngLiveJournal",
+  "authors": [
+    "Leonid Zolotarev <leoz@yahoo.com>"
+  ],
+  "description": "LiveJournal API Module for AngularJS",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "ngLiveJournal",
+    "ng-livejournal",
+    "ng-livejournal.js",
+    "LiveJournal",
+    "angularjs",
+    "angular"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "LICENSE",
+    "**/.*"
+  ],
+  "dependencies": {
+    "angular": "~1",
+    "x2js": "abdmob/x2js#1.1.7",
+    "xmlrpc": "leoz2011/xmlrpc.js#0.1.2"
+  }
+}
+
