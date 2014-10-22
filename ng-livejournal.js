@@ -34,7 +34,7 @@
 					cbGood(response,context);
 				}
 				catch(err) {
-					cbFail(err,context);
+					cbFail(context);
 				}				
 			
 			}).
@@ -52,6 +52,47 @@
 				data = xmlDoc.xml;
 			}
 			return data;
+		};
+		
+		function makeCall(method,params,cbGood,cbFail,context,username,password) {
+
+			params['ver'] = '1';
+
+		    if (username) {
+				getChallenge(
+					function(data,dummy){
+
+						if (data && data[0] && data[0].challenge) {
+							var challenge = data[0].challenge;
+
+							var response = null;			    
+							try {			    
+								response = md5.createHash(challenge + md5.createHash(password));
+							}
+							catch(err) {
+								cbFail(err);
+								return;
+							}
+
+							params['auth_method'   ] = 'challenge';
+							params['auth_response' ] = response;
+							params['username'      ] = username;
+							params['auth_challenge'] = challenge;
+
+							var param = prepareCall(method,params);         
+							postCall(param,cbGood,cbFail,context);     
+
+						}
+					},
+					function(dummy) {
+						return;
+					}
+				);
+			}
+			else {
+				var param = prepareCall(method,params);         
+				postCall(param,cbGood,cbFail,context);     
+			}
 		};
 		
 		function arrayBufferToString(buf) {
@@ -94,53 +135,53 @@
 			postCall(param,cbGood,cbFail,response);			    			    
 		};
 
-		function getUserpics(user,cbGood,cbFail,context) {
+		function getUserpics(user,cbGood,cbFail,context,username,password) {
+
 			var method = 'LJ.XMLRPC.getuserpics';
 			var params = {
-				'ver'        : '1',
 				'usejournal' : user
 			};        
-			var param = prepareCall(method,params);         
-			postCall(param,cbGood,cbFail,context);
+
+			makeCall(method,params,cbGood,cbFail,context,username,password);
 		};
-		
-		function getEvents(count,journal,last_date,cbGood,cbFail,context) {
+
+		function getEvents(count,journal,last_date,cbGood,cbFail,context,username,password) {
+
 			var method = 'LJ.XMLRPC.getevents';
 			var params = {
-					'ver'        : '1',
 					'selecttype' : 'lastn',
 					'howmany'    : count,
 					'usejournal' : journal
 			};
 			if (last_date) {
 				params['beforedate'] = last_date;
-			}   
-			var param = prepareCall(method,params);         
-			postCall(param,cbGood,cbFail,context);     
+			}
+
+			makeCall(method,params,cbGood,cbFail,context,username,password);
 		};
 		
-		function getEvent(journal,itemid,cbGood,cbFail,context) {
+		function getEvent(journal,itemid,cbGood,cbFail,context,username,password) {
+
 			var method = 'LJ.XMLRPC.getevents';
 			var params = {
-					'ver'        : '1',
 					'selecttype' : 'one',
 					'itemid'     : itemid,
 					'usejournal' : journal
 			};
-			var param = prepareCall(method,params);         
-			postCall(param,cbGood,cbFail,context);     
+
+			makeCall(method,params,cbGood,cbFail,context,username,password);
 		};
 		
-		function getComments(itemid,anum,journal,cbGood,cbFail,context) {
+		function getComments(itemid,anum,journal,cbGood,cbFail,context,username,password) {
+
 			var method = 'LJ.XMLRPC.getcomments';
 			var ditemid = itemid * 256 + anum;
 			var params = {
-				'ver'     : '1',
 				'journal' : journal,
 				'ditemid' : ditemid
 			};  
-			var param = prepareCall(method,params);         
-			postCall(param,cbGood,cbFail,context);     
+
+			makeCall(method,params,cbGood,cbFail,context,username,password);
 		};
 
 		return {
