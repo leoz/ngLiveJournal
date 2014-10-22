@@ -39,6 +39,7 @@
 			
 			}).
 			error(function(data, status) {
+				cbFail(data);
 			});
 		};
 		
@@ -117,8 +118,11 @@
 		function doLogin(username,password,cbGood,cbFail) {
 		    
 			var method = 'LJ.XMLRPC.login';
-			var params = {};
-			
+			var params = {
+				'getpickws'    : '1',
+				'getpickwurls' : '1'
+			};
+						
 			makeCall(method,params,cbGood,cbFail,null,username,password);
 		};
 
@@ -127,7 +131,7 @@
 			var method = 'LJ.XMLRPC.getuserpics';
 			var params = {
 				'usejournal' : user
-			};        
+			};
 
 			makeCall(method,params,cbGood,cbFail,context,username,password);
 		};
