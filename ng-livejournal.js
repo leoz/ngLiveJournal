@@ -8,8 +8,8 @@
 (function () {
 	'use strict';
 	
-	angular.module('ngLiveJournal', [])
-	.factory('ngLJService', ['$http','$q',function($http,$q) {
+	angular.module('ngLiveJournal', ['angular-md5'])
+	.factory('ngLJService', ['$http','$q','md5',function($http,$q,md5) {
 
 		var x2js = new X2JS();
 
@@ -34,7 +34,7 @@
 					cbGood(response,context);
 				}
 				catch(err) {
-					cbFail(context);
+					cbFail(err,context);
 				}				
 			
 			}).
@@ -90,8 +90,8 @@
 				'username'       : username,
 				'auth_challenge' : challenge		                
 			};
-			var param = this.prepare_call(method,params);         
-			this.post(param,cbGood,cbFail,response);			    			    
+			var param = prepareCall(method,params);         
+			postCall(param,cbGood,cbFail,response);			    			    
 		};
 
 		function getUserpics(user,cbGood,cbFail,context) {
