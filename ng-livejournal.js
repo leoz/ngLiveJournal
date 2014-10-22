@@ -126,6 +126,14 @@
 			makeCall(method,params,cbGood,cbFail,null,username,password);
 		};
 
+		function getFriends(username,password,cbGood,cbFail) {
+
+			var method = 'LJ.XMLRPC.getfriends';
+			var params = {};
+
+			makeCall(method,params,cbGood,cbFail,null,username,password);
+		};
+
 		function getUserpics(user,cbGood,cbFail,context,username,password) {
 
 			var method = 'LJ.XMLRPC.getuserpics';
@@ -178,6 +186,7 @@
 		return {
 			array_buffer_to_string : arrayBufferToString,
 			do_login               : doLogin,
+			get_friends            : getFriends,
 			get_userpics           : getUserpics,
 			get_events             : getEvents,
 			get_event              : getEvent,
