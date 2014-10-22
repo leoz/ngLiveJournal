@@ -26,7 +26,8 @@
   "dependencies": {
     "angular": "~1",
     "x2js": "abdmob/x2js#1.1.7",
-    "xmlrpc": "leoz2011/xmlrpc.js#0.1.2"
+    "xmlrpc": "leoz2011/xmlrpc.js#0.1.2",
+    "angular-md5": "gdi2290/angular-md5#v0.1.7"
   }
 }
 

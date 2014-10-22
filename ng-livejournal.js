@@ -64,7 +64,36 @@
 			f.readAsText(bb);
 			return d.promise;
 		};
-		
+
+		// LiveJournal API
+
+		function getChallenge(cbGood,cbFail) {
+			var method = 'LJ.XMLRPC.getchallenge';      
+			var param = prepareCall(method,null);         
+			postCall(param,cbGood,cbFail,null);
+		};
+
+		function doLogin(username,password,challenge,cbGood,cbFail) {
+			var response = null;			    
+			try {			    
+				response = md5.createHash(challenge + md5.createHash(password));
+			}
+			catch(err) {
+				cbFail(err);
+				return;
+			}			    
+			var method = 'LJ.XMLRPC.login';
+			var params = {
+				'ver'            : '1',				        
+				'auth_method'    : 'challenge',
+				'auth_response'  : response,                
+				'username'       : username,
+				'auth_challenge' : challenge		                
+			};
+			var param = this.prepare_call(method,params);         
+			this.post(param,cbGood,cbFail,response);			    			    
+		};
+
 		function getUserpics(user,cbGood,cbFail,context) {
 			var method = 'LJ.XMLRPC.getuserpics';
 			var params = {
@@ -116,6 +145,8 @@
 
 		return {
 			array_buffer_to_string : arrayBufferToString,
+			get_challenge          : getChallenge,
+			do_login               : doLogin,
 			get_userpics           : getUserpics,
 			get_events             : getEvents,
 			get_event              : getEvent,
