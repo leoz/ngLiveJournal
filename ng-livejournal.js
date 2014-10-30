@@ -57,8 +57,6 @@
 		
 		function makeCall(method,params,cbGood,cbFail,context,username,password) {
 		
-		    console.log('@@@@@ - ' + method);
-
 			params['ver'] = '1';
 
 		    if (username) {
