@@ -9,7 +9,7 @@
 	'use strict';
 	
 	angular.module('ngLiveJournal', ['angular-md5'])
-	.factory('ngLJService', ['$http','$q','md5',function($http,$q,md5) {
+	.factory('ngLJService', ['$http','md5',function($http,md5) {
 
 		var x2js = new X2JS();
 
@@ -56,6 +56,8 @@
 		};
 		
 		function makeCall(method,params,cbGood,cbFail,context,username,password) {
+		
+		    console.log('@@@@@ - ' + method);
 
 			params['ver'] = '1';
 
@@ -96,17 +98,16 @@
 			}
 		};
 		
-		function arrayBufferToString(buf) {
-			var d = $q.defer();
-			var bb = new Blob([buf]);
-			var f = new FileReader();
-			f.onload = function(e) {
-				d.resolve(e.target.result);
-			}
-			f.readAsText(bb);
-			return d.promise;
+		function decodeArrayBuffer(buf) {
+		    if (buf.constructor == String) {
+		        return buf;
+		    }
+            var uintArray = new Uint8Array(buf);
+            var encodedString = String.fromCharCode.apply(null, uintArray);
+            var decodedString = decodeURIComponent(escape(encodedString));            
+			return decodedString;
 		};
-
+				
 		// LiveJournal API
 
 		function getChallenge(cbGood,cbFail) {
@@ -184,13 +185,13 @@
 		};
 
 		return {
-			array_buffer_to_string : arrayBufferToString,
-			do_login               : doLogin,
-			get_friends            : getFriends,
-			get_userpics           : getUserpics,
-			get_events             : getEvents,
-			get_event              : getEvent,
-			get_comments           : getComments
+			decode_array_buffer : decodeArrayBuffer,
+			do_login            : doLogin,
+			get_friends         : getFriends,
+			get_userpics        : getUserpics,
+			get_events          : getEvents,
+			get_event           : getEvent,
+			get_comments        : getComments
 		};
 	}]);
 })();
