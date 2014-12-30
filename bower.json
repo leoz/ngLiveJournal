@@ -1,7 +1,7 @@
 {
   "name": "nglivejournal",
   "main": "ng-livejournal.js",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "homepage": "https://github.com/leoz2011/ngLiveJournal",
   "authors": [
     "Leonid Zolotarev <leoz@yahoo.com>"
@@ -30,4 +30,3 @@
     "angular-md5": "gdi2290/angular-md5#v0.1.7"
   }
 }
-
