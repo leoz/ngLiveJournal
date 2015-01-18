@@ -93,6 +93,21 @@
 
 		// LiveJournal API
 
+		function addComment(username,password,journal,ditemid,parent,body,subject) {
+
+			var method = 'LJ.XMLRPC.addcomment';
+			var params = {
+				'ver'     : '1',
+				'journal' : journal,
+				'ditemid' : ditemid,
+				'parent'  : parent,
+				'body'    : body,
+				'subject' : subject
+			};
+
+			return makeCall(username,password,method,params);
+		};
+
 		function doLogin(username,password) {
 
 			var method = 'LJ.XMLRPC.login';
@@ -184,6 +199,7 @@
 		};
 
 		return {
+			add_comment         : addComment,
 			do_login            : doLogin,
 			get_friends         : getFriends,
 			get_userpics        : getUserpics,
