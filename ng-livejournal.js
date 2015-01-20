@@ -219,6 +219,9 @@
 			if (buf.constructor == String) {
 				return buf;
 			}
+			if (buf.constructor == Number) {
+				return buf.toString();
+			}
 			var uintArray = new Uint8Array(buf);
 			var encodedString = String.fromCharCode.apply(null, uintArray);
 			var decodedString = decodeURIComponent(escape(encodedString));
