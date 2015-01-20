@@ -93,6 +93,33 @@
 
 		// LiveJournal API
 
+		function postEvent(username,password,journal,body,subject) {
+
+			var currentTime = new Date();
+			var year = currentTime.getFullYear();
+			var mon = currentTime.getMonth() + 1;
+			var day = currentTime.getDate();
+			var hour = currentTime.getHours();
+			var min = currentTime.getMinutes();
+
+			var method = 'LJ.XMLRPC.postevent';
+			var params = {
+				'ver'         : '1',
+				'event'       : body,
+				'subject'     : subject,
+				'security'    : 'public',
+				'lineendings' : 'pc',
+				'year'        : year,
+				'mon'         : mon,
+				'day'         : day,
+				'hour'        : hour,
+				'min'         : min,
+				'usejournal'  : journal
+			};
+
+			return makeCall(username,password,method,params);
+		};
+
 		function addComment(username,password,journal,ditemid,parent,body,subject) {
 
 			var method = 'LJ.XMLRPC.addcomment';
@@ -199,6 +226,7 @@
 		};
 
 		return {
+			post_event          : postEvent,
 			add_comment         : addComment,
 			do_login            : doLogin,
 			get_friends         : getFriends,

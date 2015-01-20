@@ -1,8 +1,8 @@
 {
   "name": "nglivejournal",
   "main": "ng-livejournal.js",
-  "version": "0.1.3",
-  "homepage": "https://github.com/leoz2011/ngLiveJournal",
+  "version": "0.1.4",
+  "homepage": "https://github.com/leoz/ngLiveJournal",
   "authors": [
     "Leonid Zolotarev <leoz@yahoo.com>"
   ],
@@ -26,7 +26,7 @@
   "dependencies": {
     "angular": "~1",
     "x2js": "abdmob/x2js#1.1.7",
-    "xmlrpc": "leoz2011/xmlrpc.js#0.1.2",
+    "xmlrpc": "leoz/xmlrpc.js#0.1.3",
     "angular-md5": "gdi2290/angular-md5#v0.1.7"
   }
 }
