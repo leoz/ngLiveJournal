@@ -93,6 +93,36 @@
 
 		// LiveJournal API
 
+		function editEvent(username,password,journal,itemid,body,subject,time) {
+
+			var currentTime = new Date(time);
+			var year = currentTime.getFullYear();
+			var mon = currentTime.getMonth() + 1;
+			var day = currentTime.getDate();
+			var hour = currentTime.getHours();
+			var min = currentTime.getMinutes();
+
+			var method = 'LJ.XMLRPC.editevent';
+			var params = {
+				'ver'        : '1',
+				'usejournal' : journal,
+				'itemid'     : itemid,
+				'event'      : body,
+				'subject'    : subject,
+				'year'       : year,
+				'mon'        : mon,
+				'day'        : day,
+				'hour'       : hour,
+				'min'        : min
+			};
+
+			return makeCall(username,password,method,params);
+		};
+
+		function deleteEvent(username,password,journal,itemid) {
+			return editEvent(username,password,journal,itemid,null,null,null);
+		};
+
 		function postEvent(username,password,journal,body,subject) {
 
 			var currentTime = new Date();
@@ -229,6 +259,8 @@
 		};
 
 		return {
+			edit_event          : editEvent,
+			delete_event        : deleteEvent,
 			post_event          : postEvent,
 			add_comment         : addComment,
 			do_login            : doLogin,
