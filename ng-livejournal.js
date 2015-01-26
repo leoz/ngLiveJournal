@@ -2,7 +2,7 @@
 
 /**
  * @license LiveJournal API Module for AngularJS
- * (c) 2014 Leonid Zolotarev
+ * (c) 2015 Leonid Zolotarev
  * License: MIT
  */
 (function () {
@@ -13,7 +13,19 @@
 
 		var x2js = new X2JS();
 
-		var URL = 'http://www.livejournal.com/interface/xmlrpc';
+		var hostName = 'http://www.livejournal.com';
+		var pathName = '/interface/xmlrpc';
+
+		var URL = '';
+
+		function setConfig(useProxy) {
+			if (useProxy) {
+				URL = pathName;
+			}
+			else {
+				URL = hostName + pathName;
+			}
+		};
 
 		function newCall(params) {
             var q = $q.defer();
@@ -269,7 +281,8 @@
 			get_event           : getEvent,
 			get_events          : getEvents,
 			get_comments        : getComments,
-			decode_array_buffer : decodeArrayBuffer
+			decode_array_buffer : decodeArrayBuffer,
+			set_config          : setConfig
 		};
 	}]);
 })();
