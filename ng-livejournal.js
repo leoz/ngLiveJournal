@@ -1,10 +1,10 @@
 /*global angular:true, browser:true */
 
 /**
- * @license LiveJournal API Module for AngularJS
- * (c) 2015 Leonid Zolotarev
- * License: MIT
- */
+* @license LiveJournal API Module for AngularJS
+* (c) 2015 Leonid Zolotarev
+* License: MIT
+*/
 (function () {
 	'use strict';
 
@@ -25,10 +25,11 @@
 			else {
 				URL = hostName + pathName;
 			}
+			console.log('ngLiveJournal - setConfig: ' + URL);
 		};
 
 		function newCall(params) {
-            var q = $q.defer();
+			var q = $q.defer();
 			$http({
 				method: 'POST',
 				url: URL,
@@ -38,24 +39,33 @@
 				}
 			}).
 			success(function(data, status) {
-				var xmlDoc = x2js.parseXmlString(data);
-
-				try {
-					var response = XMLRPC.parseDocument(xmlDoc);
-					console.log(response);
-					q.resolve(response);
+				if (!data) {
+					var msg = 'No data received';
+					console.log('ngLiveJournal - data error');
+					console.log(msg);
+					q.reject(msg);
 				}
-				catch(err) {
-					console.log(err);
-					q.reject(err);
-				}
+				else {
+					var xmlDoc = x2js.parseXmlString(data);
 
+					try {
+						var response = XMLRPC.parseDocument(xmlDoc);
+						console.log(response);
+						q.resolve(response);
+					}
+					catch(err) {
+						console.log('ngLiveJournal - parse error');
+						console.log(err);
+						q.reject(err);
+					}
+				}
 			}).
 			error(function(data, status) {
+				console.log('ngLiveJournal - post error');
 				console.log(data, status);
 				q.reject(data);
 			});
-            return q.promise;
+			return q.promise;
 		};
 
 		function prepareCall(method,params) {
@@ -227,10 +237,10 @@
 
 			var method = 'LJ.XMLRPC.getevents';
 			var params = {
-					'ver'        : '1',
-					'selecttype' : 'lastn',
-					'howmany'    : count,
-					'usejournal' : journal
+				'ver'        : '1',
+				'selecttype' : 'lastn',
+				'howmany'    : count,
+				'usejournal' : journal
 			};
 			if (last_date) {
 				params['beforedate'] = last_date;
