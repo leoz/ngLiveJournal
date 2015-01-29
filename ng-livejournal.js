@@ -172,6 +172,19 @@
 			return makeCall(username,password,method,params);
 		};
 
+		function deleteComments(username,password,journal,ditemid,dtalkid) {
+
+			var method = 'LJ.XMLRPC.deletecomments';
+			var params = {
+				'ver'     : '1',
+				'journal' : journal,
+				'ditemid' : ditemid,
+				'dtalkid' : dtalkid
+			};
+
+			return makeCall(username,password,method,params);
+		};
+
 		function addComment(username,password,journal,ditemid,parent,body,subject) {
 
 			var method = 'LJ.XMLRPC.addcomment';
@@ -284,6 +297,7 @@
 			edit_event          : editEvent,
 			delete_event        : deleteEvent,
 			post_event          : postEvent,
+			delete_comments     : deleteComments,
 			add_comment         : addComment,
 			do_login            : doLogin,
 			get_friends         : getFriends,
