@@ -2,14 +2,15 @@
 
 /**
 * @license LiveJournal API Module for AngularJS
-* (c) 2015 Leonid Zolotarev
+* (c) 2014 - 2015 Leonid Zolotarev
 * License: MIT
 */
 (function () {
 	'use strict';
 
 	angular.module('ngLiveJournal', ['angular-md5'])
-	.factory('ngLJService', ['$http','$q','md5',function($http,$q,md5) {
+	.factory('ngLJService', ['$http','$q','$log','md5',
+		function($http,$q,$log,md5) {
 
 		var x2js = new X2JS();
 
@@ -25,7 +26,7 @@
 			else {
 				URL = hostName + pathName;
 			}
-			console.log('ngLiveJournal - setConfig: ' + URL);
+			$log.debug('ngLiveJournal - setConfig: ' + URL);
 		};
 
 		function newCall(params) {
@@ -41,8 +42,8 @@
 			success(function(data, status) {
 				if (!data) {
 					var msg = 'No data received';
-					console.log('ngLiveJournal - data error');
-					console.log(msg);
+					$log.debug('ngLiveJournal - data error');
+					$log.debug(msg);
 					q.reject(msg);
 				}
 				else {
@@ -50,25 +51,26 @@
 
 					try {
 						var response = XMLRPC.parseDocument(xmlDoc);
-						console.log(response);
+						//$log.debug(response); // FIXME
 						q.resolve(response);
 					}
 					catch(err) {
-						console.log('ngLiveJournal - parse error');
-						console.log(err);
+						$log.debug('ngLiveJournal - parse error');
+						$log.debug(err);
 						q.reject(err);
 					}
 				}
 			}).
 			error(function(data, status) {
-				console.log('ngLiveJournal - post error');
-				console.log(data, status);
+				$log.debug('ngLiveJournal - post error');
+				$log.debug(data, status);
 				q.reject(data);
 			});
 			return q.promise;
 		};
 
 		function prepareCall(method,params) {
+			$log.debug('ngLiveJournal - prepareCall: ' + method);
 			var xmlDoc = XMLRPC.document(method, [params]);
 			var data;
 			if ("XMLSerializer" in window) {
@@ -250,10 +252,11 @@
 
 			var method = 'LJ.XMLRPC.getevents';
 			var params = {
-				'ver'        : '1',
-				'selecttype' : 'lastn',
-				'howmany'    : count,
-				'usejournal' : journal
+				'ver'           : '1',
+				'selecttype'    : 'lastn',
+				'prefersubject' : 'true',
+				'howmany'       : count,
+				'usejournal'    : journal
 			};
 			if (last_date) {
 				params['beforedate'] = last_date;
@@ -308,5 +311,8 @@
 			decode_array_buffer : decodeArrayBuffer,
 			set_config          : setConfig
 		};
+	}])
+	.config(['$logProvider',function($logProvider) {
+		$logProvider.debugEnabled(true);
 	}]);
 })();

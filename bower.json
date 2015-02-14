@@ -1,7 +1,7 @@
 {
   "name": "nglivejournal",
   "main": "ng-livejournal.js",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "homepage": "https://github.com/leoz/ngLiveJournal",
   "authors": [
     "Leonid Zolotarev <leoz@yahoo.com>"
