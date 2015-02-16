@@ -8,10 +8,11 @@
 (function () {
 	'use strict';
 
-	angular.module('ngLiveJournal', ['angular-md5'])
+	angular.module('ngLiveJournal', ['angular-md5','ngLogExt'])
 	.factory('ngLJService', ['$http','$q','$log','md5',
 		function($http,$q,$log,md5) {
 
+		var log = $log.context('LJ');
 		var x2js = new X2JS();
 
 		var hostName = 'http://www.livejournal.com';
@@ -26,7 +27,7 @@
 			else {
 				URL = hostName + pathName;
 			}
-			$log.debug('ngLiveJournal - setConfig: ' + URL);
+			log.debug('setConfig:', URL);
 		};
 
 		function newCall(params) {
@@ -40,10 +41,11 @@
 				}
 			}).
 			success(function(data, status) {
+				log.debug('newCall - success:', status);
+
 				if (!data) {
 					var msg = 'No data received';
-					$log.debug('ngLiveJournal - data error');
-					$log.debug(msg);
+					log.debug('newCall - data error:', msg);
 					q.reject(msg);
 				}
 				else {
@@ -51,26 +53,24 @@
 
 					try {
 						var response = XMLRPC.parseDocument(xmlDoc);
-						//$log.debug(response); // FIXME
+						log.debug('newCall - response:', response);
 						q.resolve(response);
 					}
 					catch(err) {
-						$log.debug('ngLiveJournal - parse error');
-						$log.debug(err);
+						log.debug('newCall - parse error:', err);
 						q.reject(err);
 					}
 				}
 			}).
 			error(function(data, status) {
-				$log.debug('ngLiveJournal - post error');
-				$log.debug(data, status);
+				log.debug('newCall - POST error', data, status);
 				q.reject(data);
 			});
 			return q.promise;
 		};
 
 		function prepareCall(method,params) {
-			$log.debug('ngLiveJournal - prepareCall: ' + method);
+			log.debug('prepareCall:', method);
 			var xmlDoc = XMLRPC.document(method, [params]);
 			var data;
 			if ("XMLSerializer" in window) {

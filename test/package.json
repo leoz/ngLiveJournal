@@ -1,0 +1,9 @@
+{
+  "name": "nglivejournal-test",
+  "version": "0.0.1",
+  "description": "ngLiveJournal Test",
+  "dependencies": {
+    "express": "^4.11.1",
+    "request": "^2.51.0"
+  }
+}
