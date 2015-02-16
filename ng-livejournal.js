@@ -252,11 +252,11 @@
 
 			var method = 'LJ.XMLRPC.getevents';
 			var params = {
-				'ver'           : '1',
-				'selecttype'    : 'lastn',
-				'prefersubject' : 'true',
-				'howmany'       : count,
-				'usejournal'    : journal
+				'ver'        : '1',
+				'selecttype' : 'lastn',
+				'truncate'   : '4',
+				'howmany'    : count,
+				'usejournal' : journal
 			};
 			if (last_date) {
 				params['beforedate'] = last_date;
@@ -311,8 +311,5 @@
 			decode_array_buffer : decodeArrayBuffer,
 			set_config          : setConfig
 		};
-	}])
-	.config(['$logProvider',function($logProvider) {
-		$logProvider.debugEnabled(true);
 	}]);
 })();
