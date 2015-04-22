@@ -69,6 +69,45 @@
 			return q.promise;
 		};
 
+		function getEmbed(journal,ditemid,moduleid) {
+			
+			var q = $q.defer();
+			var url = 'http://' + journal + '.livejournal.com/' + ditemid + '.html';
+
+			$http({
+				method: 'GET',
+				url: url
+			}).
+			success(function(data, status) {
+				log.debug('getEmbed - success:', status);
+
+				if (!data) {
+					var msg = 'No data received';
+					log.debug('getEmbed - data error:', msg);
+					q.reject(msg);
+				}
+				else {
+
+					data = data.match('<iframe(.|\n)*?src="(.|\n)*?moduleid=' + moduleid + '(.|\n)*?"(.|\n)*?>(.|\n)*?<\/iframe>');
+
+					if (!data || !data[0]) {
+						var msg = 'No data found';
+						log.debug('getEmbed - data not found error:', msg);
+						q.reject(msg);
+					}
+					else {
+						log.debug('getEmbed - response:', data[0]);
+						q.resolve(data[0]);
+					}
+				}
+			}).
+			error(function(data, status) {
+				log.debug('newCall - GET error', data, status);
+				q.reject(data);
+			});
+			return q.promise;
+		};
+
 		function prepareCall(method,params) {
 			log.debug('prepareCall:', method);
 			var xmlDoc = XMLRPC.document(method, [params]);
@@ -308,6 +347,7 @@
 			get_event           : getEvent,
 			get_events          : getEvents,
 			get_comments        : getComments,
+			get_embed           : getEmbed,
 			decode_array_buffer : decodeArrayBuffer,
 			set_config          : setConfig
 		};
